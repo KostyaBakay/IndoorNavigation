@@ -1,9 +1,11 @@
 package com.example.fooandbar.ibeacon;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.fooandbar.ibeacon.fragment.SettingsFragment;
 import com.example.fooandbar.ibeacon.model.UserDevice;
 import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 import com.kontakt.sdk.android.ble.configuration.ActivityCheckConfiguration;
