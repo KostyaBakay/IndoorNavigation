@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.fooandbar.ibeacon.R;
+import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 
 public class SettingsFragment extends Fragment {
     private EditText mUserNameEditText;
@@ -24,6 +25,7 @@ public class SettingsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         mUserNameEditText = (EditText) getActivity().findViewById(R.id.user_name_edit_text);
+        mUserNameEditText.setHint(PreferencesUtil.readName(getActivity()));
         mSaveButton = (Button) getActivity().findViewById(R.id.save_button);
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
@@ -31,6 +33,8 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 if (mUserNameEditText.length() > 0) {
                     Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();
+                    PreferencesUtil.writeName(getActivity(), mUserNameEditText.getText().toString());
+                    getActivity().onBackPressed();
                 } else {
                     Toast.makeText(getActivity(), R.string.enter_your_data, Toast.LENGTH_SHORT).show();
                 }
