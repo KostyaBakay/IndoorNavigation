@@ -29,11 +29,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements ProximityManager.ProximityListener{
-
     private final String TAG = "MainActivity";
     private final String TAGNETW = "NetworkBeaconRequest";
     private ProximityManagerContract proximityManager;
     private ScanContext scanContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
         KontaktSDK.initialize(this).setDebugLoggingEnabled(true);
         proximityManager = new KontaktProximityManager(this);
     }
-
-
 
     @Override
     public void onStart()
