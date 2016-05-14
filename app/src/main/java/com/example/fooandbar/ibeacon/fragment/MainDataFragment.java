@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.example.fooandbar.ibeacon.R;
 import com.example.fooandbar.ibeacon.adapter.RoomListAdapter;
+import com.example.fooandbar.ibeacon.model.Room;
 
 import java.util.ArrayList;
 
@@ -34,7 +35,7 @@ public class MainDataFragment extends Fragment {
 
     public void setRoomData(){
         Room singleRoom = new Room();
-        singleRoom.set();
-        roomsArrayList.add(room);
+        //singleRoom.set();
+        roomsArrayList.add(singleRoom);
     }
 }
