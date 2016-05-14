@@ -2,6 +2,8 @@
 *.ap_
 *.dex
 *.class
+/.idea/workspace.xml
+/.idea/libraries
 bin/
 gen/
 build/
@@ -17,3 +19,4 @@ captures/
 .DS_Store
 /build
 /captures
+/workspace.xml
