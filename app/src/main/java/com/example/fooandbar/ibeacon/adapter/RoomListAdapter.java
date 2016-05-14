@@ -1,5 +1,8 @@
 package com.example.fooandbar.ibeacon.adapter;
 
 
-public class RoomListAdapter {
+import android.widget.ArrayAdapter;
+
+public class RoomListAdapter extends ArrayAdapter<Room>{
+
 }
