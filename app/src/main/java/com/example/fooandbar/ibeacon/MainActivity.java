@@ -7,12 +7,10 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-<<<<<<< HEAD
-=======
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
->>>>>>> fae46e6356e5b9a9869296dfbd4079aba1f58597
 
 import com.example.fooandbar.ibeacon.fragment.SettingsFragment;
 import com.example.fooandbar.ibeacon.fragment.UserDetailsFragment;
@@ -32,13 +30,10 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         setupPreferences(); //sets preferences
 
-<<<<<<< HEAD
         startService(new Intent(MainActivity.this,BeaconListenerService.class));
         // For testing SettingsFragment
         // addSettingsFragment();
 
-=======
->>>>>>> fae46e6356e5b9a9869296dfbd4079aba1f58597
         // For testing UserDetailsFragment
         // addUserDetailsFragment();
     }
@@ -72,12 +67,8 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-<<<<<<< HEAD
-=======
-    @Override
-    public void onScanStop() {
-        Log.d(TAG, "scanning is stopped");
-    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,5 +94,4 @@ public class MainActivity extends AppCompatActivity  {
 
         return super.onOptionsItemSelected(item);
     }
->>>>>>> fae46e6356e5b9a9869296dfbd4079aba1f58597
 }

@@ -83,7 +83,7 @@ public class FirebaseRepo {
 
     private void deleteUserFromRoomList(String userId, String[] roomIds) {
         for (String roomId : roomIds) {
-            String runUrl = rootRef + roomList + roomId + "/" + userId + "/";
+            String runUrl = rootRef + roomList + roomId + "/" + deviceList  + userId + "/";
             new Firebase(runUrl).setValue(null);
         }
     }
