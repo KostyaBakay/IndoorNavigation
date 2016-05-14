@@ -1,9 +1,21 @@
 package com.example.fooandbar.ibeacon.model;
 
+import java.util.List;
+
 public class Room {
     private String mName;
     private String mBeaconAlias;
     private int mUsersInRoom;
+    private List<UserDevice> mUserDevices;
+
+
+    public List<UserDevice> getmUserDevices() {
+        return mUserDevices;
+    }
+
+    public void setmUserDevices(List<UserDevice> mUserDevices) {
+        this.mUserDevices = mUserDevices;
+    }
 
     public int getmUsersInRoom() {
         return mUsersInRoom;
