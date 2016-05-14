@@ -7,6 +7,8 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.example.fooandbar.ibeacon.model.UserDevice;
+import com.example.fooandbar.ibeacon.storage.FirebaseRepo;
+import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 import com.kontakt.sdk.android.ble.configuration.ActivityCheckConfiguration;
 import com.kontakt.sdk.android.ble.configuration.ForceScanConfiguration;
 import com.kontakt.sdk.android.ble.configuration.ScanPeriod;
@@ -18,6 +20,7 @@ import com.kontakt.sdk.android.ble.discovery.BluetoothDeviceEvent;
 import com.kontakt.sdk.android.ble.discovery.ibeacon.IBeaconDeviceEvent;
 import com.kontakt.sdk.android.ble.manager.ProximityManager;
 import com.kontakt.sdk.android.ble.manager.ProximityManagerContract;
+import com.kontakt.sdk.android.common.KontaktSDK;
 import com.kontakt.sdk.android.common.profile.DeviceProfile;
 import com.kontakt.sdk.android.common.profile.IBeaconDevice;
 import com.kontakt.sdk.android.common.profile.RemoteBluetoothDevice;
@@ -47,6 +50,7 @@ public class BeaconListenerService extends Service implements ProximityManager.P
 
     @Override
     public void onCreate() {
+        KontaktSDK.initialize(this).setDebugLoggingEnabled(true);
         proximityManager = new KontaktProximityManager(this);
         super.onCreate();
     }
@@ -103,62 +107,55 @@ public class BeaconListenerService extends Service implements ProximityManager.P
 
         switch (bluetoothDeviceEvent.getEventType()) {
             case SPACE_ENTERED:
-                if(devicesList.size()==1)
-                    userDevice = setUser(devicesList.get(0));
+
                 break;
             case DEVICE_DISCOVERED:
-                if(devicesList.size()==1)
-                    userDevice = setUser(devicesList.get(0));
-
+                if(devicesList.size()==1) {
+                    FirebaseRepo repo = new FirebaseRepo();
+                    UserDevice device = new UserDevice();
+                    device.setDistance(devicesList.get(0).getDistance());
+                    device.setIdBeacon(devicesList.get(0).getUniqueId());
+                    device.setName(PreferencesUtil.readName(getBaseContext()));
+                    device.setUserID(PreferencesUtil.readId(getBaseContext()));
+                    repo.saveUserDevice(device);
+                }
+                /*
                 Log.d("TestingTag", "Count of iBeacon: " + deviceList.size());
                 Log.d("TestingTag", "Name: " + userDevice.getName());
                 Log.d("TestingTag", "UserID: " + userDevice.getUserID());
                 Log.d("TestingTag", "BeaconID: " + userDevice.getIdBeacon());
                 Log.d("TestingTag", "Distance: " + userDevice.getDistance());
-
-
+                */
 
                 break;
             case DEVICES_UPDATE:
-                if(devicesList.size()==1)
-                    userDevice = setUser(devicesList.get(0));
+                if(devicesList.size()==1) {
+                    FirebaseRepo repo = new FirebaseRepo();
+                    UserDevice device = new UserDevice();
+                    device.setDistance(devicesList.get(0).getDistance());
+                    device.setIdBeacon(devicesList.get(0).getUniqueId());
+                    device.setName(PreferencesUtil.readName(getBaseContext()));
+                    device.setUserID(PreferencesUtil.readId(getBaseContext()));
+                    repo.saveUserDevice(device);
+                }
                 break;
             case DEVICE_LOST:
-                if(deviceList.size()!=0)
-                    userDevice = removeUser(devicesList.get(0));
+                if(deviceList.size()==1)
+                {
+                    FirebaseRepo repo = new FirebaseRepo();
+                    UserDevice device = new UserDevice();
+                    device.setDistance(devicesList.get(0).getDistance());
+                    device.setIdBeacon(devicesList.get(0).getUniqueId());
+                    device.setName(PreferencesUtil.readName(getBaseContext()));
+                    device.setUserID(PreferencesUtil.readId(getBaseContext()));
+                    repo.deleteUserDevice(device);                }
                 break;
             case SPACE_ABANDONED:
-                if(deviceList.size()!=0)
-                    userDevice = removeUser(devicesList.get(0));
                 break;
             default:
                 //
         }
     }
-
-    public UserDevice setUser(IBeaconDevice iBeaconDevice)
-    {
-        UserDevice userDevice = new UserDevice();
-        userDevice.setName("");
-        userDevice.setIdBeacon(iBeaconDevice.getUniqueId());
-        userDevice.setUserID(getMACAddress("wlan0"));
-        userDevice.setDistance(iBeaconDevice.getDistance());
-        return userDevice;
-    }
-
-
-
-    public UserDevice removeUser(IBeaconDevice iBeaconDevice)
-    {
-        UserDevice userDevice = new UserDevice();
-        userDevice.setName("");
-        userDevice.setIdBeacon("");
-        userDevice.setUserID("");
-        userDevice.setDistance(iBeaconDevice.getDistance());
-        return userDevice;
-    }
-
-
 
 
 

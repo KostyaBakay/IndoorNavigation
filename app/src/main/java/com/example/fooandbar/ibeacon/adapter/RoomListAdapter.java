@@ -2,7 +2,6 @@ package com.example.fooandbar.ibeacon.adapter;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,7 @@ public class RoomListAdapter extends ArrayAdapter<Room>{
 
         Room singleRoom = getItem(position);
         viewHolder.roomNameTextView.setText(singleRoom.getName());
-        viewHolder.usersInRoomTextView.setText(singleRoom.getmUsersInRoom()+"");
+      //  viewHolder.usersInRoomTextView.setText(singleRoom.getmUsersInRoom()+"");
         viewHolder.roomHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

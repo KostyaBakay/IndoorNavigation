@@ -17,12 +17,13 @@ public class FirebaseRepo {
 
     private String rootRef = "https://indoornavigation.firebaseio.com/";
     private String roomList = "room_list/";
+    private String deviceList = "userDevices/";
 
 // TODO add callbacks
 
     public void saveUserDevice(UserDevice userDevice) {
         deleteUserDevice(userDevice);
-        String runUrl = rootRef + roomList + userDevice.getIdBeacon() + "/" + userDevice.getUserID() + "/";
+        String runUrl = rootRef + roomList + userDevice.getIdBeacon() + deviceList + userDevice.getUserID() + "/";
         new Firebase(runUrl).setValue(userDevice);
     }
 
