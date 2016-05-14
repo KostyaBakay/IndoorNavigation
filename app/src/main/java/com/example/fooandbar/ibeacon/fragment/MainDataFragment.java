@@ -17,17 +17,19 @@ import com.example.fooandbar.ibeacon.model.Room;
 import java.util.ArrayList;
 
 public class MainDataFragment extends Fragment {
-    ArrayList<Room> roomsArrayList;
+    ArrayList<Room> roomsArrayList = new ArrayList<>();;
     ListView roomListView;
     RoomListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_data,container);
+        View view = inflater.inflate(R.layout.fragment_main_data,container,false);
+
         roomListView = (ListView) view.findViewById(R.id.roomListView);
-        roomsArrayList = new ArrayList<>();
-
-
+        adapter = new RoomListAdapter(getContext(), R.layout.item_room,roomsArrayList);
+        roomListView.setDivider(null);
+        roomListView.setAdapter(adapter);
+        setRoomData();
 
 
         return  view;
@@ -35,7 +37,13 @@ public class MainDataFragment extends Fragment {
 
     public void setRoomData(){
         Room singleRoom = new Room();
-        //singleRoom.set();
+        singleRoom.setAlias("SomeAlias");
+        singleRoom.setmUsersInRoom(21);
+        singleRoom.setName("Texas");
         roomsArrayList.add(singleRoom);
+        roomsArrayList.add(singleRoom);
+        roomsArrayList.add(singleRoom);
+        roomsArrayList.add(singleRoom);
+        adapter.notifyDataSetChanged();
     }
 }
