@@ -1,17 +1,10 @@
 package com.example.fooandbar.ibeacon;
 
-import android.content.Context;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import com.example.fooandbar.ibeacon.fragment.SettingsFragment;
-import com.example.fooandbar.ibeacon.fragment.UserDetailsFragment;
 import com.example.fooandbar.ibeacon.model.UserDevice;
 import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 import com.kontakt.sdk.android.ble.configuration.ActivityCheckConfiguration;
@@ -34,7 +27,7 @@ import com.kontakt.sdk.android.manager.KontaktProximityManager;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements ProximityManager.ProximityListener {
+public class MainActivity extends AppCompatActivity implements ProximityManager.ProximityListener{
     private final String TAG = "MainActivity";
     private final String TAGNETW = "NetworkBeaconRequest";
     private ProximityManagerContract proximityManager;
@@ -43,44 +36,33 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        KontaktSDK.initialize(this).setDebugLoggingEnabled(true);
-        proximityManager = new KontaktProximityManager(this);
-        setupPreferences(); //sets preferences
-
-        // For testing UserDetailsFragment
-        // addUserDetailsFragment();
-    }
+		if (PreferencesUtil.canVerified(this)) {
+			setContentView(R.layout.activity_main);
+			KontaktSDK.initialize(this).setDebugLoggingEnabled(true);
+			proximityManager = new KontaktProximityManager(this);
+		}
+		else {
+			loadTutorial();
+		}
+	}
 
     @Override
     public void onStart() {
         super.onStart();
-        proximityManager.initializeScan(getScanContext(), new OnServiceReadyListener() {
-            @Override
-            public void onServiceReady() {
-                proximityManager.attachListener(MainActivity.this);
-            }
+		setupPref(); //set preferences
+		proximityManager.initializeScan(getScanContext(), new OnServiceReadyListener() {
+			@Override
+			public void onServiceReady() {
+				proximityManager.attachListener(MainActivity.this);
+			}
 
-            @Override
-            public void onConnectionFailure() {
+			@Override
+			public void onConnectionFailure() {
 
-            }
-        });
+			}
+		});
     }
 
-    private void addSettingsFragment() {
-        SettingsFragment fragment = new SettingsFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.activity_main, fragment).addToBackStack(null);
-        ft.commit();
-    }
-
-    private void addUserDetailsFragment() {
-        UserDetailsFragment fragment = new UserDetailsFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.activity_main, fragment);
-        ft.commit();
-    }
 
     @Override
     public void onEvent(BluetoothDeviceEvent bluetoothDeviceEvent) {
@@ -89,13 +71,14 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
         DeviceProfile deviceProfile = bluetoothDeviceEvent.getDeviceProfile();
         IBeaconDeviceEvent event = (IBeaconDeviceEvent) bluetoothDeviceEvent;
         List<IBeaconDevice> devicesList = event.getDeviceList();
-        for (IBeaconDevice device : devicesList) {
-            Log.d(TAG, device.getName());
-            Log.d(TAG, "Mac-address of beacon: " + device.getAddress());
-            Log.d(TAG, device.getUniqueId());
-            Log.d(TAG, device.getMajor() + "");
-            Log.d(TAG, device.getMinor() + "");
-            Log.d(TAG, device.getProximityUUID().toString());
+        for (IBeaconDevice device : devicesList)
+        {
+            Log.d(TAG,device.getName());
+            Log.d(TAG,"Mac-address of beacon: " + device.getAddress());
+            Log.d(TAG,device.getUniqueId());
+            Log.d(TAG,device.getMajor() + "");
+            Log.d(TAG,device.getMinor() + "");
+            Log.d(TAG,device.getProximityUUID().toString());
             Log.d(TAG, device.getDistance() + "");
         }
         UserDevice userDevice = null;
@@ -112,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
                 userDevice = setUser(devicesList.get(0));
                 break;
             case DEVICE_LOST:
-                // if no beacons for user device, then delete user device from all rooms
+                 // if no beacons for user device, then delete user device from all rooms
                 userDevice = removeUser(devicesList.get(0));
                 break;
             case SPACE_ABANDONED:
@@ -123,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
         }
     }
 
-    public UserDevice setUser(IBeaconDevice iBeaconDevice) {
+    public UserDevice setUser(IBeaconDevice iBeaconDevice)
+    {
         UserDevice userDevice = new UserDevice();
         userDevice.setName("");
         userDevice.setIdBeacon(iBeaconDevice.getUniqueId());
@@ -132,7 +116,8 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
         return userDevice;
     }
 
-    public UserDevice removeUser(IBeaconDevice iBeaconDevice) {
+    public UserDevice removeUser(IBeaconDevice iBeaconDevice)
+    {
         UserDevice userDevice = new UserDevice();
         userDevice.setName("");
         userDevice.setIdBeacon("");
@@ -140,6 +125,8 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
         userDevice.setDistance(iBeaconDevice.getDistance());
         return userDevice;
     }
+
+
 
 
     private ScanContext getScanContext() {
@@ -159,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
     }
 
 
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -166,16 +154,10 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
         proximityManager.disconnect();
     }
 
-    private void setupPreferences() {
-        if (PreferencesUtil.readName(this) == null) PreferencesUtil.writeName(this, android.os.Build.MODEL);
-        if (PreferencesUtil.readId(this) == null) PreferencesUtil.writeId(this, getMacAddress());
-    }
-
-    private String getMacAddress() {
-        WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        WifiInfo info = manager.getConnectionInfo();
-        return info.getMacAddress();
-    }
+	private void setupPref() {
+		if (PreferencesUtil.readId(this) == null) PreferencesUtil.writeId(this, "23232323");
+		if (PreferencesUtil.readName(this) == null) PreferencesUtil.writeName(this, "My Device");
+	}
 
     @Override
     public void onScanStart() {
@@ -187,28 +169,8 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
         Log.d(TAG, "scanning is stopped");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(MainActivity.class.getSimpleName(), "onCreateOptionsMenu");
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(MainActivity.class.getSimpleName(), "onOptionsItemSelected");
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            addSettingsFragment();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+	private void loadTutorial() {
+		Intent intent = new Intent(getApplicationContext(), IntroActivity.class);
+		startActivity(intent);
+	}
 }
