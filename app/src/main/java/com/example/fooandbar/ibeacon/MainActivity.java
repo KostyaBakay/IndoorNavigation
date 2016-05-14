@@ -22,6 +22,8 @@ import com.kontakt.sdk.android.common.profile.IBeaconDevice;
 import com.kontakt.sdk.android.common.profile.RemoteBluetoothDevice;
 import com.kontakt.sdk.android.manager.KontaktProximityManager;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
         DeviceProfile deviceProfile = bluetoothDeviceEvent.getDeviceProfile();
         IBeaconDeviceEvent event = (IBeaconDeviceEvent) bluetoothDeviceEvent;
         List<IBeaconDevice> devicesList = event.getDeviceList();
+        ArrayList<Double> distances = new ArrayList<>();
         for (IBeaconDevice device : devicesList)
         {
             Log.d(TAG,device.getName());
@@ -75,26 +78,35 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
             Log.d(TAG,device.getMinor() + "");
             Log.d(TAG,device.getProximityUUID().toString());
             Log.d(TAG, device.getDistance() + "");
+            distances.add(device.getDistance());
         }
         UserDevice userDevice = null;
 
         switch (bluetoothDeviceEvent.getEventType()) {
             case SPACE_ENTERED:
-                userDevice = setUser(devicesList.get(0));
+                if(devicesList.size()!=0&&devicesList.size()>1) {
+                    userDevice = setUser(devicesList.get(distances.indexOf(Collections.min(distances))));
+                }
+                else if(devicesList.size()==1)
+                    userDevice = setUser(devicesList.get(0));
                 break;
             case DEVICE_DISCOVERED:
-                userDevice = setUser(devicesList.get(0));
+                if(deviceList.size()!=0)
+                    userDevice = setUser(devicesList.get(0));
 
                 break;
             case DEVICES_UPDATE:
-                userDevice = setUser(devicesList.get(0));
+                if(deviceList.size()!=0)
+                    userDevice = setUser(devicesList.get(0));
                 break;
             case DEVICE_LOST:
                  // if no beacons for user device, then delete user device from all rooms
-                userDevice = removeUser(devicesList.get(0));
+                if(deviceList.size()!=0)
+                    userDevice = removeUser(devicesList.get(0));
                 break;
             case SPACE_ABANDONED:
-                userDevice = removeUser(devicesList.get(0));
+                if(deviceList.size()!=0)
+                    userDevice = removeUser(devicesList.get(0));
                 break;
             default:
                 //
@@ -128,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
         if (scanContext == null) {
             scanContext = new ScanContext.Builder()
                     .setScanPeriod(ScanPeriod.RANGING)
-                    .setScanPeriod(new ScanPeriod(TimeUnit.SECONDS.toMillis(15), TimeUnit.SECONDS.toMillis(10)))
+                    .setScanPeriod(new ScanPeriod(TimeUnit.SECONDS.toMillis(5), TimeUnit.SECONDS.toMillis(120)))
                     .setScanMode(ProximityManager.SCAN_MODE_BALANCED)
                     .setActivityCheckConfiguration(ActivityCheckConfiguration.MINIMAL)
                     .setForceScanConfiguration(ForceScanConfiguration.MINIMAL)
