@@ -1,33 +1,24 @@
 package com.example.fooandbar.ibeacon;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.example.fooandbar.ibeacon.model.UserDevice;
+import com.example.fooandbar.ibeacon.fragment.SettingsFragment;
+import com.example.fooandbar.ibeacon.fragment.UserDetailsFragment;
 import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
-import com.kontakt.sdk.android.ble.configuration.ActivityCheckConfiguration;
-import com.kontakt.sdk.android.ble.configuration.ForceScanConfiguration;
-import com.kontakt.sdk.android.ble.configuration.ScanPeriod;
-import com.kontakt.sdk.android.ble.configuration.scan.EddystoneScanContext;
-import com.kontakt.sdk.android.ble.configuration.scan.IBeaconScanContext;
 import com.kontakt.sdk.android.ble.configuration.scan.ScanContext;
-import com.kontakt.sdk.android.ble.connection.OnServiceReadyListener;
-import com.kontakt.sdk.android.ble.discovery.BluetoothDeviceEvent;
-import com.kontakt.sdk.android.ble.discovery.ibeacon.IBeaconDeviceEvent;
-import com.kontakt.sdk.android.ble.manager.ProximityManager;
 import com.kontakt.sdk.android.ble.manager.ProximityManagerContract;
-import com.kontakt.sdk.android.common.KontaktSDK;
-import com.kontakt.sdk.android.common.profile.DeviceProfile;
-import com.kontakt.sdk.android.common.profile.IBeaconDevice;
-import com.kontakt.sdk.android.common.profile.RemoteBluetoothDevice;
-import com.kontakt.sdk.android.manager.KontaktProximityManager;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-public class MainActivity extends AppCompatActivity implements ProximityManager.ProximityListener{
+public class MainActivity extends AppCompatActivity  {
     private final String TAG = "MainActivity";
     private final String TAGNETW = "NetworkBeaconRequest";
     private ProximityManagerContract proximityManager;
@@ -36,141 +27,71 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		if (PreferencesUtil.canVerified(this)) {
-			setContentView(R.layout.activity_main);
-			KontaktSDK.initialize(this).setDebugLoggingEnabled(true);
-			proximityManager = new KontaktProximityManager(this);
-		}
-		else {
-			loadTutorial();
-		}
-	}
+        setContentView(R.layout.activity_main);
+        setupPreferences(); //sets preferences
 
-    @Override
-    public void onStart() {
-        super.onStart();
-		setupPref(); //set preferences
-		proximityManager.initializeScan(getScanContext(), new OnServiceReadyListener() {
-			@Override
-			public void onServiceReady() {
-				proximityManager.attachListener(MainActivity.this);
-			}
+        startService(new Intent(MainActivity.this,BeaconListenerService.class));
+        // For testing SettingsFragment
+        // addSettingsFragment();
 
-			@Override
-			public void onConnectionFailure() {
-
-			}
-		});
+        // For testing UserDetailsFragment
+        // addUserDetailsFragment();
     }
 
 
+
+    private void addSettingsFragment() {
+        SettingsFragment fragment = new SettingsFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.activity_main, fragment).addToBackStack(null);
+        ft.commit();
+    }
+
+    private void addUserDetailsFragment() {
+        UserDetailsFragment fragment = new UserDetailsFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.activity_main, fragment);
+        ft.commit();
+    }
+
+
+    private void setupPreferences() {
+        if (PreferencesUtil.readName(this) == null) PreferencesUtil.writeName(this, android.os.Build.MODEL);
+        if (PreferencesUtil.readId(this) == null) PreferencesUtil.writeId(this, getMacAddress());
+    }
+
+    private String getMacAddress() {
+        WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = manager.getConnectionInfo();
+        return info.getMacAddress();
+    }
+
+
+
+
+
     @Override
-    public void onEvent(BluetoothDeviceEvent bluetoothDeviceEvent) {
-        List<? extends RemoteBluetoothDevice> deviceList = bluetoothDeviceEvent.getDeviceList();
-        long timestamp = bluetoothDeviceEvent.getTimestamp();
-        DeviceProfile deviceProfile = bluetoothDeviceEvent.getDeviceProfile();
-        IBeaconDeviceEvent event = (IBeaconDeviceEvent) bluetoothDeviceEvent;
-        List<IBeaconDevice> devicesList = event.getDeviceList();
-        for (IBeaconDevice device : devicesList)
-        {
-            Log.d(TAG,device.getName());
-            Log.d(TAG,"Mac-address of beacon: " + device.getAddress());
-            Log.d(TAG,device.getUniqueId());
-            Log.d(TAG,device.getMajor() + "");
-            Log.d(TAG,device.getMinor() + "");
-            Log.d(TAG,device.getProximityUUID().toString());
-            Log.d(TAG, device.getDistance() + "");
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(MainActivity.class.getSimpleName(), "onCreateOptionsMenu");
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(MainActivity.class.getSimpleName(), "onOptionsItemSelected");
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            addSettingsFragment();
+            return true;
         }
-        UserDevice userDevice = null;
 
-        switch (bluetoothDeviceEvent.getEventType()) {
-            case SPACE_ENTERED:
-                userDevice = setUser(devicesList.get(0));
-                break;
-            case DEVICE_DISCOVERED:
-                userDevice = setUser(devicesList.get(0));
-
-                break;
-            case DEVICES_UPDATE:
-                userDevice = setUser(devicesList.get(0));
-                break;
-            case DEVICE_LOST:
-                 // if no beacons for user device, then delete user device from all rooms
-                userDevice = removeUser(devicesList.get(0));
-                break;
-            case SPACE_ABANDONED:
-                userDevice = removeUser(devicesList.get(0));
-                break;
-            default:
-                //
-        }
+        return super.onOptionsItemSelected(item);
     }
-
-    public UserDevice setUser(IBeaconDevice iBeaconDevice)
-    {
-        UserDevice userDevice = new UserDevice();
-        userDevice.setName("");
-        userDevice.setIdBeacon(iBeaconDevice.getUniqueId());
-        userDevice.setUserID("");
-        userDevice.setDistance(iBeaconDevice.getDistance());
-        return userDevice;
-    }
-
-    public UserDevice removeUser(IBeaconDevice iBeaconDevice)
-    {
-        UserDevice userDevice = new UserDevice();
-        userDevice.setName("");
-        userDevice.setIdBeacon("");
-        userDevice.setUserID("");
-        userDevice.setDistance(iBeaconDevice.getDistance());
-        return userDevice;
-    }
-
-
-
-
-    private ScanContext getScanContext() {
-        if (scanContext == null) {
-            scanContext = new ScanContext.Builder()
-                    .setScanPeriod(ScanPeriod.RANGING)
-                    .setScanPeriod(new ScanPeriod(TimeUnit.SECONDS.toMillis(15), TimeUnit.SECONDS.toMillis(10)))
-                    .setScanMode(ProximityManager.SCAN_MODE_BALANCED)
-                    .setActivityCheckConfiguration(ActivityCheckConfiguration.MINIMAL)
-                    .setForceScanConfiguration(ForceScanConfiguration.MINIMAL)
-                    .setIBeaconScanContext(new IBeaconScanContext.Builder().build())
-                    .setEddystoneScanContext(new EddystoneScanContext.Builder().build())
-                    .setForceScanConfiguration(ForceScanConfiguration.MINIMAL)
-                    .build();
-        }
-        return scanContext;
-    }
-
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        proximityManager.detachListener(this);
-        proximityManager.disconnect();
-    }
-
-	private void setupPref() {
-		if (PreferencesUtil.readId(this) == null) PreferencesUtil.writeId(this, "23232323");
-		if (PreferencesUtil.readName(this) == null) PreferencesUtil.writeName(this, "My Device");
-	}
-
-    @Override
-    public void onScanStart() {
-        Log.d(TAG, "scanning is started");
-    }
-
-    @Override
-    public void onScanStop() {
-        Log.d(TAG, "scanning is stopped");
-    }
-
-	private void loadTutorial() {
-		Intent intent = new Intent(getApplicationContext(), IntroActivity.class);
-		startActivity(intent);
-	}
 }
