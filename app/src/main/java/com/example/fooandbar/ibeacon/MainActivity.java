@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.fooandbar.ibeacon.model.UserDevice;
+import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 import com.kontakt.sdk.android.ble.configuration.ActivityCheckConfiguration;
 import com.kontakt.sdk.android.ble.configuration.ForceScanConfiguration;
 import com.kontakt.sdk.android.ble.configuration.ScanPeriod;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
     public void onStart()
     {
         super.onStart();
+		setupPref(); //set preferences
         proximityManager.initializeScan(getScanContext(), new OnServiceReadyListener() {
             @Override
             public void onServiceReady() {
@@ -149,7 +151,10 @@ public class MainActivity extends AppCompatActivity implements ProximityManager.
         proximityManager.disconnect();
     }
 
-
+	private void setupPref() {
+		if (PreferencesUtil.readId(this) == null) PreferencesUtil.writeId(this, "23232323");
+		if (PreferencesUtil.readName(this) == null) PreferencesUtil.writeName(this, "My Device");
+	}
 
     @Override
     public void onScanStart() {
