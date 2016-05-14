@@ -7,7 +7,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name=".AndroidApplication"
         android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +21,7 @@
             android:name="kontakt.io.API_KEY"
             android:value="@string/kontakt_io_api_key" />
         <service android:name="com.kontakt.sdk.android.ble.service.ProximityService" android:exported="false"/>
-
+        <service android:name=".BeaconListenerService" android:exported="false" ></service>
     </application>
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>

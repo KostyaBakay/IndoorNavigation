@@ -1,44 +1,25 @@
 package com.example.fooandbar.ibeacon.model;
 
-import java.util.List;
+import java.util.Map;
 
 public class Room {
 
-    private String mName;
-//    private String mBeaconAlias;
-//    private int mUsersInRoom;
-    private List<UserDevice> mUserDevices;
+    private String name;
+    private Map<String, UserDevice> userDevices;
 
-
-    public List<UserDevice> getmUserDevices() {
-        return mUserDevices;
-    }
-
-    public void setmUserDevices(List<UserDevice> mUserDevices) {
-        this.mUserDevices = mUserDevices;
-    }
-//
-//    public int getmUsersInRoom() {
-//        return mUsersInRoom;
-//    }
-//
-//    public void setmUsersInRoom(int mUsersInRoom) {
-//        this.mUsersInRoom = mUsersInRoom;
-//    }
-//
     public String getName() {
-        return mName;
+        return name;
     }
 
-    public void setName(String mName) {
-        this.mName = mName;
+    public void setName(String name) {
+        this.name = name;
     }
-//
-//    public String getAlias() {
-//        return mBeaconAlias;
-//    }
-//
-//    public void setAlias(String mAlias) {
-//        this.mBeaconAlias = mAlias;
-//    }
+
+    public Map<String, UserDevice> getUserDevices() {
+        return userDevices;
+    }
+
+    public void setUserDevices(Map<String, UserDevice> userDevices) {
+        this.userDevices = userDevices;
+    }
 }

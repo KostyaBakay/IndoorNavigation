@@ -163,7 +163,7 @@ public class BeaconListenerService extends Service implements ProximityManager.P
         if (scanContext == null) {
             scanContext = new ScanContext.Builder()
                     .setScanPeriod(ScanPeriod.RANGING)
-                    .setScanPeriod(new ScanPeriod(TimeUnit.SECONDS.toMillis(5), TimeUnit.SECONDS.toMillis(120)))
+                    .setScanPeriod(new ScanPeriod(TimeUnit.SECONDS.toMillis(5), TimeUnit.SECONDS.toMillis(5)))
                     .setScanMode(ProximityManager.SCAN_MODE_BALANCED)
                     .setActivityCheckConfiguration(ActivityCheckConfiguration.MINIMAL)
                     .setForceScanConfiguration(ForceScanConfiguration.MINIMAL)

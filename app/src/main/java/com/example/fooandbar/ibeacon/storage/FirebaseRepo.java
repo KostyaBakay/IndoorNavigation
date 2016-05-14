@@ -22,8 +22,9 @@ public class FirebaseRepo {
 // TODO add callbacks
 
     public void saveUserDevice(UserDevice userDevice) {
+        Log.d("TestLog","saveUserDevice() is called");
         deleteUserDevice(userDevice);
-        String runUrl = rootRef + roomList + userDevice.getIdBeacon() + deviceList + userDevice.getUserID() + "/";
+        String runUrl = rootRef + roomList + userDevice.getIdBeacon() + "/" + deviceList + userDevice.getUserID() + "/";
         new Firebase(runUrl).setValue(userDevice);
     }
 
@@ -35,7 +36,8 @@ public class FirebaseRepo {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 GenericTypeIndicator<Map<String, Room>> type =
-                        new GenericTypeIndicator<Map<String, Room>>() {};
+                        new GenericTypeIndicator<Map<String, Room>>() {
+                        };
 
                 Map<String, Room> roomMap = snapshot.getValue(type);
                 retrievedCallback.onAllRoomsMapRetrieved(roomMap);
@@ -51,6 +53,7 @@ public class FirebaseRepo {
     /**
      * delete UserDevice from all rooms
      */
+
     public void deleteUserDevice(final UserDevice userDevice) {
         // update room ids
         String runUrl = rootRef + roomList;
@@ -59,7 +62,8 @@ public class FirebaseRepo {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 GenericTypeIndicator<Map<String, Room>> type =
-                        new GenericTypeIndicator<Map<String, Room>>() {};
+                        new GenericTypeIndicator<Map<String, Room>>() {
+                        };
                 Map<String, Room> roomMap = snapshot.getValue(type);
                 Object[] roomIdsAsObjects = roomMap.keySet().toArray();
                 String[] roomIds = new String[roomIdsAsObjects.length];
