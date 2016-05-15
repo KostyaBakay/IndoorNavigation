@@ -18,7 +18,7 @@
 			android:layout_height="50dp"
 			android:layout_marginLeft="16dp"
 			android:layout_marginRight="16dp"
-			android:src="@drawable/man"/>
+			android:background="@drawable/man"/>
 
 		<LinearLayout
 			android:layout_width="0dp"

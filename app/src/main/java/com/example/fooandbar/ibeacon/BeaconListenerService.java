@@ -135,6 +135,7 @@ public class BeaconListenerService extends Service implements ProximityManager.P
                     device.setIdBeacon(devicesList.get(0).getUniqueId());
                     device.setName(PreferencesUtil.readName(getBaseContext()));
                     device.setUserID(PreferencesUtil.readId(getBaseContext()));
+                    device.setSex(PreferencesUtil.readSex(getApplicationContext()));
                     repo.saveUserDevice(device);
                     Log.d(TAG,"saveUserDevice() is called");
                 }

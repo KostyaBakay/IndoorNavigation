@@ -85,11 +85,13 @@ public class RoomListAdapter extends BaseExpandableListAdapter{
             }else{
                 viewHolder.usersInRoomTextView.setText(getChildrenCount(groupPosition)+"");
             }
-            viewHolder.roomName.setText(((Room)rooms[groupPosition]).getName());
+            if(((Room)rooms[groupPosition]).getName()!=null ){
+                viewHolder.roomName.setText(((Room)rooms[groupPosition]).getName());
+            }else{
+                viewHolder.roomName.setText("Untitled Room");
+            }
+
         }
-
-
-
 
         return convertView;
     }
@@ -109,6 +111,9 @@ public class RoomListAdapter extends BaseExpandableListAdapter{
         childViewHolder.macAdressTextView.setText(((UserDevice)getChild(groupPosition,childPosition)).getUserID());
         childViewHolder.userDistanceTextView.setText(decimalFormat.format(mMap.get(rooms[groupPosition]).get(childPosition).getDistance())+" m");
         childViewHolder.userNameTextView.setText(mMap.get(rooms[groupPosition]).get(childPosition).getName());
+        if((((UserDevice) getChild(groupPosition,childPosition)).isSex())){
+            childViewHolder.userImageView.setBackground(mContext.getResources().getDrawable(R.drawable.girl));
+        }
 
         return convertView;
     }

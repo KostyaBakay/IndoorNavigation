@@ -6,18 +6,18 @@ public class UserDevice {
     private String idBeacon;
     private String userID;
     private double distance;
-    private int sex;
+    private boolean sex;
 
 
     public String getName() {
         return name;
     }
 
-    public int getSex() {
+    public boolean isSex() {
         return sex;
     }
 
-    public void setSex(int sex) {
+    public void setSex(boolean sex) {
         this.sex = sex;
     }
 
