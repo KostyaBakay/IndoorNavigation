@@ -28,6 +28,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     private final String TAGNETW = "NetworkBeaconRequest";
+    private Toolbar mToolbar;
     private ProximityManagerContract proximityManager;
     private ScanContext scanContext;
     private SweetAlertDialog sweetAlertDialog;
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        getToolbar().setTitle(R.string.rooms);
         if (!PreferencesUtil.canVerified(this)) {
             startActivity(new Intent(this, IntroActivity.class));
         }
@@ -169,8 +171,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupUI() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+    }
+
+    public Toolbar getToolbar() {
+        return mToolbar;
     }
 
     public static boolean isBluetoothAvailable() {

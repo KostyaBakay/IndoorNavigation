@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.example.fooandbar.ibeacon.R;
+import com.example.fooandbar.ibeacon.activity.MainActivity;
 import com.example.fooandbar.ibeacon.adapter.RoomListAdapter;
 import com.example.fooandbar.ibeacon.model.Room;
 import com.example.fooandbar.ibeacon.model.UserDevice;
@@ -31,8 +32,7 @@ public class MainDataFragment extends Fragment implements StorageContract.OnAllR
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_data, container, false);
-
-
+        ((MainActivity) getActivity()).getToolbar().setTitle(R.string.rooms);
         roomListView = (ExpandableListView) view.findViewById(R.id.roomListView);
         roomListView.setDivider(null);
         roomListView.setChildDivider(null);

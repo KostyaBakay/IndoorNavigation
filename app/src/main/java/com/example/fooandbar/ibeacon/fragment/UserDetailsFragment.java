@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.fooandbar.ibeacon.R;
+import com.example.fooandbar.ibeacon.activity.MainActivity;
 import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 
 public class UserDetailsFragment extends Fragment {
@@ -16,7 +17,9 @@ public class UserDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_details, container, false);
+        ((MainActivity) getActivity()).getToolbar().setTitle(R.string.about_user);
+        return view;
     }
 
     @Override

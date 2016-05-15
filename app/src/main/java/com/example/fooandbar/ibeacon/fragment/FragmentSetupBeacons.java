@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.fooandbar.ibeacon.R;
+import com.example.fooandbar.ibeacon.activity.MainActivity;
 import com.example.fooandbar.ibeacon.adapter.SetupedRoomAdapter;
 import com.example.fooandbar.ibeacon.model.Room;
 import com.example.fooandbar.ibeacon.model.UserDevice;
@@ -47,6 +48,7 @@ public class FragmentSetupBeacons extends Fragment
 	public View onCreateView(
 			LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_setup_beacons, null);
+		((MainActivity) getActivity()).getToolbar().setTitle(R.string.edit_rooms);
 		setupUI(view);
 		updateContent();
 		return view;
