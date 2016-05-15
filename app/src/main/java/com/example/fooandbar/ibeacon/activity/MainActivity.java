@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.fooandbar.ibeacon.BeaconListenerService;
 import com.example.fooandbar.ibeacon.R;
@@ -125,7 +126,9 @@ public class MainActivity extends AppCompatActivity  {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(MainActivity.class.getSimpleName(), "onOptionsItemSelected");
         int id = item.getItemId();
-        if (id == R.id.action_rooms) {
+        if (id == R.id.action_sync) {
+            Toast.makeText(this, R.string.sync, Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.action_rooms) {
             addMainDataFragment();
             return true;
         } else if (id == R.id.action_about_user) {

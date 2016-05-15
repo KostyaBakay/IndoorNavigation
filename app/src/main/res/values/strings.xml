@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">IBeacon</string>
     <string name="kontakt_io_api_key">HwNjzNzwJUDDYftJgIeoQXiOmzobyecS</string>
+    <string name="sync">Sync</string>
     <string name="rooms">Rooms</string>
     <string name="about_user">About user</string>
     <string name="settings">Settings</string>
