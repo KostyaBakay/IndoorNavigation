@@ -4,9 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="tutorial_title">#FFF</color>
-    <color name="tutorial_subtitle">#CCC</color>
+    <color name="tutorial_indicator_selected">#FFF</color>
+    <color name="tutorial_indicator_unselected">#AAA</color>
     <color name="tutorial_button">#FFF</color>
+    <color name="tutorial_title">#FFF</color>
+    <color name="tutorial_subtitle">#AAA</color>
     <color name="tutorial_page1">#FF4081</color>
     <color name="tutorial_page2">#3F51B5</color>
 </resources>

@@ -33,6 +33,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.kontaktio.sdk:kontakt-sdk:2.1.2'
 	compile 'jp.wasabeef:blurry:2.0.2'
+    compile 'za.co.riggaroo:materialhelptutorial:1.1.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.firebase:firebase-client-android:2.5.2+'
 
