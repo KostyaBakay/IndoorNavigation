@@ -76,6 +76,16 @@ public class BeaconListenerService extends Service implements ProximityManager.P
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
+        Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
+        restartServiceIntent.setPackage(getPackageName());
+
+        PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmService.set(
+                AlarmManager.ELAPSED_REALTIME,
+                SystemClock.elapsedRealtime() + 1000,
+                restartServicePendingIntent);
+
         super.onTaskRemoved(rootIntent);
     }
 
