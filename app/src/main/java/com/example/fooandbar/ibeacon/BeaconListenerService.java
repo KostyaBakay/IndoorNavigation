@@ -27,7 +27,6 @@ import com.kontakt.sdk.android.common.profile.RemoteBluetoothDevice;
 import com.kontakt.sdk.android.manager.KontaktProximityManager;
 
 import java.net.NetworkInterface;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -89,10 +88,10 @@ public class BeaconListenerService extends Service implements ProximityManager.P
         DeviceProfile deviceProfile = bluetoothDeviceEvent.getDeviceProfile();
         IBeaconDeviceEvent event = (IBeaconDeviceEvent) bluetoothDeviceEvent;
         List<IBeaconDevice> devicesList = event.getDeviceList();
-        ArrayList<Double> distances = new ArrayList<>();
 
         for (IBeaconDevice device : devicesList)
         {
+            /*
             Log.d(TAG,device.getName());
             Log.d(TAG,"Mac-address of beacon: " + device.getAddress());
             Log.d(TAG,device.getUniqueId());
@@ -100,7 +99,7 @@ public class BeaconListenerService extends Service implements ProximityManager.P
             Log.d(TAG,device.getMinor() + "");
             Log.d(TAG,device.getProximityUUID().toString());
             Log.d(TAG, device.getDistance() + "");
-            distances.add(device.getDistance());
+            */
         }
 
         UserDevice userDevice = null;
@@ -111,6 +110,11 @@ public class BeaconListenerService extends Service implements ProximityManager.P
                 break;
             case DEVICE_DISCOVERED:
                 if(devicesList.size()==1) {
+                    Log.d(TAG,"Distance: "  + devicesList.get(0).getDistance());
+                    Log.d(TAG,"BeaconID: "  + devicesList.get(0).getUniqueId());
+                    Log.d(TAG,"Name: "  + PreferencesUtil.readName(getBaseContext()));
+                    Log.d(TAG,"UserID: "  + PreferencesUtil.readId(getBaseContext()));
+
                     FirebaseRepo repo = new FirebaseRepo();
                     UserDevice device = new UserDevice();
                     device.setDistance(devicesList.get(0).getDistance());
@@ -118,6 +122,7 @@ public class BeaconListenerService extends Service implements ProximityManager.P
                     device.setName(PreferencesUtil.readName(getBaseContext()));
                     device.setUserID(PreferencesUtil.readId(getBaseContext()));
                     repo.saveUserDevice(device);
+                    Log.d(TAG,"saveUserDevice() is called");
                 }
                 /*
                 Log.d("TestingTag", "Count of iBeacon: " + deviceList.size());
@@ -130,6 +135,12 @@ public class BeaconListenerService extends Service implements ProximityManager.P
                 break;
             case DEVICES_UPDATE:
                 if(devicesList.size()==1) {
+                    /*
+                    Log.d(TAG,"Distance: "  + devicesList.get(0).getDistance());
+                    Log.d(TAG,"BeaconID: "  + devicesList.get(0).getUniqueId());
+                    Log.d(TAG,"Name: "  + PreferencesUtil.readName(getBaseContext()));
+                    Log.d(TAG,"UserID: "  + PreferencesUtil.readId(getBaseContext()));
+
                     FirebaseRepo repo = new FirebaseRepo();
                     UserDevice device = new UserDevice();
                     device.setDistance(devicesList.get(0).getDistance());
@@ -137,18 +148,27 @@ public class BeaconListenerService extends Service implements ProximityManager.P
                     device.setName(PreferencesUtil.readName(getBaseContext()));
                     device.setUserID(PreferencesUtil.readId(getBaseContext()));
                     repo.saveUserDevice(device);
+                    Log.d(TAG,"saveUserDevice() is called");
+                    */
                 }
                 break;
             case DEVICE_LOST:
                 if(deviceList.size()==1)
                 {
+                    Log.d(TAG,"Distance: "  + devicesList.get(0).getDistance());
+                    Log.d(TAG,"BeaconID: "  + devicesList.get(0).getUniqueId());
+                    Log.d(TAG,"Name: "  + PreferencesUtil.readName(getBaseContext()));
+                    Log.d(TAG,"UserID: "  + PreferencesUtil.readId(getBaseContext()));
+
                     FirebaseRepo repo = new FirebaseRepo();
                     UserDevice device = new UserDevice();
                     device.setDistance(devicesList.get(0).getDistance());
                     device.setIdBeacon(devicesList.get(0).getUniqueId());
                     device.setName(PreferencesUtil.readName(getBaseContext()));
                     device.setUserID(PreferencesUtil.readId(getBaseContext()));
-                    repo.deleteUserDevice(device);                }
+                    repo.deleteUserDevice(device);
+                    Log.d(TAG, "deleteUserDevice() is called");
+                }
                 break;
             case SPACE_ABANDONED:
                 break;
@@ -163,7 +183,7 @@ public class BeaconListenerService extends Service implements ProximityManager.P
         if (scanContext == null) {
             scanContext = new ScanContext.Builder()
                     .setScanPeriod(ScanPeriod.RANGING)
-                    .setScanPeriod(new ScanPeriod(TimeUnit.SECONDS.toMillis(5), TimeUnit.SECONDS.toMillis(5)))
+                    .setScanPeriod(new ScanPeriod(TimeUnit.SECONDS.toMillis(5), TimeUnit.SECONDS.toMillis(20)))
                     .setScanMode(ProximityManager.SCAN_MODE_BALANCED)
                     .setActivityCheckConfiguration(ActivityCheckConfiguration.MINIMAL)
                     .setForceScanConfiguration(ForceScanConfiguration.MINIMAL)

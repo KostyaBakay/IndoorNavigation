@@ -21,11 +21,34 @@ public class FirebaseRepo {
 
 // TODO add callbacks
 
-    public void saveUserDevice(UserDevice userDevice) {
-        Log.d("TestLog","saveUserDevice() is called");
-        deleteUserDevice(userDevice);
-        String runUrl = rootRef + roomList + userDevice.getIdBeacon() + "/" + deviceList + userDevice.getUserID() + "/";
-        new Firebase(runUrl).setValue(userDevice);
+    public void saveUserDevice(final UserDevice userDevice) {
+        Log.d("TestLog", "saveUserDevice() is called");
+
+        String runUrl = rootRef + roomList;
+        final Firebase firebase = new Firebase(runUrl);
+        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                GenericTypeIndicator<Map<String, Room>> type =
+                        new GenericTypeIndicator<Map<String, Room>>() {
+                        };
+                Map<String, Room> roomMap = snapshot.getValue(type);
+                Object[] roomIdsAsObjects = roomMap.keySet().toArray();
+                String[] roomIds = new String[roomIdsAsObjects.length];
+                for (int i = 0; i < roomIdsAsObjects.length; i++) {
+                    roomIds[i] = (String) roomIdsAsObjects[i];
+                }
+                deleteUserFromRoomList(userDevice.getUserID(), roomIds);
+                String runUrl = rootRef + roomList + userDevice.getIdBeacon() + "/" + deviceList + userDevice.getUserID() + "/";
+                new Firebase(runUrl).setValue(userDevice);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e(TAG, "onCancelled: " + firebaseError.getMessage());
+            }
+        });
+
     }
 
     public void getAllRoomsMap(final StorageContract.OnAllRoomsMapRetrievedCallback retrievedCallback) {
@@ -83,7 +106,7 @@ public class FirebaseRepo {
 
     private void deleteUserFromRoomList(String userId, String[] roomIds) {
         for (String roomId : roomIds) {
-            String runUrl = rootRef + roomList + roomId + "/" + deviceList  + userId + "/";
+            String runUrl = rootRef + roomList + roomId + "/" + deviceList + userId + "/";
             new Firebase(runUrl).setValue(null);
         }
     }
