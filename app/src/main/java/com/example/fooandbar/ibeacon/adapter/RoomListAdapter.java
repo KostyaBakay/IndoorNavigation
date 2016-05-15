@@ -1,17 +1,20 @@
 package com.example.fooandbar.ibeacon.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.fooandbar.ibeacon.R;
 import com.example.fooandbar.ibeacon.model.Room;
 import com.example.fooandbar.ibeacon.model.UserDevice;
+import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -103,8 +106,8 @@ public class RoomListAdapter extends BaseExpandableListAdapter{
             childViewHolder = (ChildViewHolder) convertView.getTag();
         }
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
-
-        childViewHolder.userDistanceTextView.setText(decimalFormat.format(mMap.get(rooms[groupPosition]).get(childPosition).getDistance())+"m");
+        childViewHolder.macAdressTextView.setText(((UserDevice)getChild(groupPosition,childPosition)).getUserID());
+        childViewHolder.userDistanceTextView.setText(decimalFormat.format(mMap.get(rooms[groupPosition]).get(childPosition).getDistance())+" m");
         childViewHolder.userNameTextView.setText(mMap.get(rooms[groupPosition]).get(childPosition).getName());
 
         return convertView;
@@ -128,10 +131,14 @@ public class RoomListAdapter extends BaseExpandableListAdapter{
         TextView userDistanceTextView;
         TextView userNameTextView;
         LinearLayout childHolder;
+        ImageView userImageView;
+        TextView macAdressTextView;
         public ChildViewHolder(View view) {
             userDistanceTextView = (TextView) view.findViewById(R.id.userDistanceTextView);
             userNameTextView = (TextView) view.findViewById(R.id.userNameTextView);
             childHolder = (LinearLayout) view.findViewById(R.id.childHolder);
+            userImageView = (ImageView) view.findViewById(R.id.userImageView);
+            macAdressTextView = (TextView) view.findViewById(R.id.macAdress);
         }
     }
 }

@@ -29,4 +29,11 @@ public class PreferencesUtil {
 	public static void setVerified(Context context, boolean can_first_entry) {
 		PreferencesManager.from(context).setBoolean(Const.CAN_VERIFIED, can_first_entry).commit();
 	}
+	public static boolean readSex(Context context) {
+		return PreferencesManager.from(context).getBoolean(Const.IS_MALE);
+	}
+
+	public static void writeSex(Context context, boolean isMale) {
+		PreferencesManager.from(context).setBoolean(Const.IS_MALE, isMale).commit();
+	}
 }

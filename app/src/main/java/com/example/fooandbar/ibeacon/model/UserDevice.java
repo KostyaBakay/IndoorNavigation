@@ -1,17 +1,24 @@
 package com.example.fooandbar.ibeacon.model;
 
-/**
- * Created by rsv on 14.05.2016.
- */
+
 public class UserDevice {
     private String name;
     private String idBeacon;
     private String userID;
     private double distance;
+    private int sex;
 
 
     public String getName() {
         return name;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
     }
 
     public void setName(String name) {
