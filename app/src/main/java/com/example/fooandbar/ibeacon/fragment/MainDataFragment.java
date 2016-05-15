@@ -25,7 +25,6 @@ public class MainDataFragment extends Fragment implements StorageContract.OnAllR
     LinkedHashMap<Room, ArrayList<UserDevice>> dataToSet = new LinkedHashMap<>();
     ExpandableListView roomListView;
     RoomListAdapter adapter;
-    boolean firstTime = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,17 +35,6 @@ public class MainDataFragment extends Fragment implements StorageContract.OnAllR
         roomListView.setChildDivider(null);
         roomListView.setGroupIndicator(null);
         new FirebaseRepo().getAllRoomsMap(this);
-        adapter = new RoomListAdapter(getContext(), dataToSet);
-        roomListView.setAdapter(adapter);
-//        ArrayList<UserDevice> userDevices = new ArrayList<>();
-//        UserDevice userDevice = new UserDevice();
-//        userDevice.setDistance(5);
-//        userDevice.setIdBeacon("asd");
-//        userDevice.setName("Lex");
-//        userDevice.setUserID("Nexus");
-//        userDevices.add(userDevice);
-     //   roomListView.setAdapter(adapter);
-      //  adapter.notifyDataSetChanged();
 
         return view;
     }
@@ -83,12 +71,12 @@ public class MainDataFragment extends Fragment implements StorageContract.OnAllR
                         userDevices.add(room.getUserDevices().get(keys[j]));
                     }
                     dataToSet.put(room,userDevices);
+                    userDevices = new ArrayList<>();
                 }
 
             }
             adapter = new RoomListAdapter(getContext(), dataToSet);
             roomListView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
             dataToSet = new LinkedHashMap<>();
         }
 

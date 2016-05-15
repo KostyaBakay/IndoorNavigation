@@ -13,6 +13,7 @@ import com.example.fooandbar.ibeacon.R;
 import com.example.fooandbar.ibeacon.model.Room;
 import com.example.fooandbar.ibeacon.model.UserDevice;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -101,8 +102,9 @@ public class RoomListAdapter extends BaseExpandableListAdapter{
         }else{
             childViewHolder = (ChildViewHolder) convertView.getTag();
         }
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-        childViewHolder.userDistanceTextView.setText(mMap.get(rooms[groupPosition]).get(childPosition).getDistance()+"");
+        childViewHolder.userDistanceTextView.setText(decimalFormat.format(mMap.get(rooms[groupPosition]).get(childPosition).getDistance())+"m");
         childViewHolder.userNameTextView.setText(mMap.get(rooms[groupPosition]).get(childPosition).getName());
 
         return convertView;
