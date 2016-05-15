@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity  {
         setupPreferences(); //sets preferences
 
         startService(new Intent(MainActivity.this,BeaconListenerService.class));
+        FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
+        fragmentManager.add(R.id.fragment_layout,new MainDataFragment()).addToBackStack(null).commit();
         // For testing SettingsFragment
         // addSettingsFragment();
 
