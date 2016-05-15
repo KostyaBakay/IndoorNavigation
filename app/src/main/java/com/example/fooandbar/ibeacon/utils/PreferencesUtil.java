@@ -21,4 +21,12 @@ public class PreferencesUtil {
 	public static void writeId(Context context, String user_id) {
 		PreferencesManager.from(context).setString(Const.USER_ID, user_id).commit();
 	}
+
+	public static boolean canVerified(Context context) {
+		return PreferencesManager.from(context).getBoolean(Const.CAN_VERIFIED);
+	}
+
+	public static void setVerified(Context context, boolean can_first_entry) {
+		PreferencesManager.from(context).setBoolean(Const.CAN_VERIFIED, can_first_entry).commit();
+	}
 }

@@ -7,16 +7,16 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.fooandbar.ibeacon.BeaconListenerService;
+import com.example.fooandbar.ibeacon.IntroActivity;
 import com.example.fooandbar.ibeacon.R;
 import com.example.fooandbar.ibeacon.fragment.MainDataFragment;
 import com.example.fooandbar.ibeacon.fragment.SettingsFragment;
 import com.example.fooandbar.ibeacon.fragment.UserDetailsFragment;
-import com.example.fooandbar.ibeacon.BeaconListenerService;
 import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 import com.kontakt.sdk.android.ble.configuration.scan.ScanContext;
 import com.kontakt.sdk.android.ble.manager.ProximityManagerContract;
@@ -30,16 +30,23 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setupPreferences(); //sets preferences
+		if (PreferencesUtil.canVerified(this)) {
+			setContentView(R.layout.activity_main);
+			setupPreferences(); //sets preferences
 
-        startService(new Intent(MainActivity.this,BeaconListenerService.class));
-        // For testing SettingsFragment
-        // addSettingsFragment();
+			startService(new Intent(MainActivity.this,BeaconListenerService.class));
+			// For testing SettingsFragment
+			// addSettingsFragment();
 
         // For testing UserDetailsFragment
         // addUserDetailsFragment();
         addMainDataFragment();
+			// For testing UserDetailsFragment
+			// addUserDetailsFragment();
+		}
+        else {
+			startActivity(new Intent(this, IntroActivity.class));
+		}
     }
 
 
