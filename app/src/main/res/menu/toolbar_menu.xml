@@ -18,6 +18,11 @@
         android:title="@string/about_user"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_add_room"
+        android:orderInCategory="100"
+        android:title="Edit rooms"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/settings"

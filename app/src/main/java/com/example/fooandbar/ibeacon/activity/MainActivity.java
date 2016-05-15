@@ -12,10 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.fooandbar.ibeacon.BeaconListenerService;
 import com.example.fooandbar.ibeacon.R;
+import com.example.fooandbar.ibeacon.fragment.FragmentSetupBeacons;
 import com.example.fooandbar.ibeacon.fragment.MainDataFragment;
 import com.example.fooandbar.ibeacon.fragment.SettingsFragment;
 import com.example.fooandbar.ibeacon.fragment.UserDetailsFragment;
@@ -87,6 +87,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+	public void editRooms() {
+		if (getSupportFragmentManager().findFragmentByTag(FragmentSetupBeacons.TAG) == null) {
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.container_main, new FragmentSetupBeacons(), FragmentSetupBeacons.TAG)
+					.commit();
+		}
+	}
+
     private void setupPreferences() {
         if (PreferencesUtil.readName(this) == null)
             PreferencesUtil.writeName(this, android.os.Build.MODEL);
@@ -111,7 +120,12 @@ public class MainActivity extends AppCompatActivity {
             sweetAlertDialog.show();
     }
 
-    @Override
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(MainActivity.class.getSimpleName(), "onCreateOptionsMenu");
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
@@ -122,25 +136,36 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(MainActivity.class.getSimpleName(), "onOptionsItemSelected");
         int id = item.getItemId();
-        if (id == R.id.action_sync) {
-            FragmentManager fm = getSupportFragmentManager();
-            for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-                fm.popBackStack();
-            }
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.container_main, new MainDataFragment()).commit();
+		switch (id) {
+			case R.id.action_rooms:
+				addMainDataFragment();
+				break;
 
-        } else if (id == R.id.action_rooms) {
-            addMainDataFragment();
-            return true;
-        } else if (id == R.id.action_about_user) {
-            addUserDetailsFragment();
-            return true;
-        } else if (id == R.id.action_settings) {
-            addSettingsFragment();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+			case R.id.action_sync:
+				FragmentManager fm = getSupportFragmentManager();
+				for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+					fm.popBackStack();
+				}
+				FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+				fragmentTransaction.replace(R.id.container_main, new MainDataFragment()).commit();
+				break;
+
+			case R.id.action_about_user:
+				addUserDetailsFragment();
+				break;
+
+			case R.id.action_settings:
+				addSettingsFragment();
+				break;
+
+			case R.id.action_add_room:
+				editRooms();
+				break;
+
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+		return true;
     }
 
     private void setupUI() {

@@ -51,6 +51,11 @@ public class FirebaseRepo {
 
     }
 
+    public void createRoom(String roomId, String roomName) {
+        String runUrl = rootRef + roomList + roomId + "/name/";
+        new Firebase(runUrl).setValue(roomName);
+    }
+
     public void getAllRoomsMap(final StorageContract.OnAllRoomsMapRetrievedCallback retrievedCallback) {
         String runUrl = rootRef + roomList;
         final Firebase firebase = new Firebase(runUrl);
@@ -71,6 +76,11 @@ public class FirebaseRepo {
                 Log.e(TAG, "onCancelled: " + firebaseError.getMessage());
             }
         });
+    }
+
+    public void deleteRoomById(String roomId) {
+        String runUrl = rootRef + roomList + roomId + "/";
+        new Firebase(runUrl).setValue(null);
     }
 
     /**

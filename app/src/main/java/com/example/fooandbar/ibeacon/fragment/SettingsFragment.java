@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.fooandbar.ibeacon.activity.MainActivity;
 import com.example.fooandbar.ibeacon.R;
+import com.example.fooandbar.ibeacon.activity.MainActivity;
 import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 
 public class SettingsFragment extends Fragment {
