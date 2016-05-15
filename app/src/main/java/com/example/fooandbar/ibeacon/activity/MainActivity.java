@@ -30,26 +30,11 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		if (PreferencesUtil.canVerified(this)) {
-			setContentView(R.layout.activity_main);
-			setupPreferences(); //sets preferences
-
-			startService(new Intent(MainActivity.this,BeaconListenerService.class));
-			// For testing SettingsFragment
-			// addSettingsFragment();
-
-        // For testing UserDetailsFragment
-        // addUserDetailsFragment();
+        setContentView(R.layout.activity_main);
+        setupPreferences(); //sets preferences
+        startService(new Intent(MainActivity.this,BeaconListenerService.class));
         addMainDataFragment();
-			// For testing UserDetailsFragment
-			// addUserDetailsFragment();
-		}
-        else {
-			startActivity(new Intent(this, IntroActivity.class));
-		}
     }
-
-
 
     public void addMainDataFragment() {
         MainDataFragment fragment = new MainDataFragment();
@@ -84,8 +69,13 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!PreferencesUtil.canVerified(this)) {
+            startActivity(new Intent(this, IntroActivity.class));
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
