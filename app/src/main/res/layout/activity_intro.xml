@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<android.support.v4.view.ViewPager
+		android:id="@+id/view_pager"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:layout_gravity="bottom"
+		android:layout_marginBottom="?attr/actionBarSize"
+		android:alpha="0.18"
+		android:background="#FFF"/>
+
+	<TextView
+		android:id="@+id/title"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:paddingTop="@dimen/activity_horizontal_margin"
+		android:textSize="24sp"
+		android:textStyle="bold"
+		android:textColor="@color/tutorial_title"
+		tools:text="Title"/>
+
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:layout_gravity="bottom">
+
+		<Button
+			android:id="@+id/button_skip"
+			style="@style/Widget.AppCompat.Button.Borderless"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="start|center"
+			android:text="@string/tutorial_skip"
+			android:textColor="@color/tutorial_button"/>
+
+		<LinearLayout
+			android:id="@+id/layout_indicators"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:orientation="horizontal"/>
+
+		<Button
+			android:id="@+id/button_finish"
+			style="@style/Widget.AppCompat.Button.Borderless"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="end|center"
+			android:text="@string/tutorial_done"
+			android:textColor="@color/tutorial_button"
+			android:visibility="gone"/>
+
+		<Button
+			android:id="@+id/button_next"
+			style="@style/Widget.AppCompat.Button.Borderless"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="end|center"
+			android:text="@string/tutorial_next"
+			android:textColor="@color/tutorial_button"/>
+
+	</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -8,16 +8,16 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.fooandbar.ibeacon.BeaconListenerService;
+import com.example.fooandbar.ibeacon.IntroActivity;
 import com.example.fooandbar.ibeacon.R;
 import com.example.fooandbar.ibeacon.fragment.MainDataFragment;
 import com.example.fooandbar.ibeacon.fragment.SettingsFragment;
 import com.example.fooandbar.ibeacon.fragment.UserDetailsFragment;
-import com.example.fooandbar.ibeacon.BeaconListenerService;
 import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 import com.kontakt.sdk.android.ble.configuration.scan.ScanContext;
 import com.kontakt.sdk.android.ble.manager.ProximityManagerContract;
@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupPreferences(); //sets preferences
-
         startService(new Intent(MainActivity.this,BeaconListenerService.class));
+<<<<<<< HEAD
         FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
         fragmentManager.add(R.id.fragment_layout,new MainDataFragment()).addToBackStack(null).commit();
         // For testing SettingsFragment
@@ -42,10 +42,10 @@ public class MainActivity extends AppCompatActivity  {
 
         // For testing UserDetailsFragment
         // addUserDetailsFragment();
+=======
+>>>>>>> bf2ecb938b49d5507dbfc75186b1cb8f729cdf93
         addMainDataFragment();
     }
-
-
 
     public void addMainDataFragment() {
         MainDataFragment fragment = new MainDataFragment();
@@ -80,8 +80,13 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!PreferencesUtil.canVerified(this)) {
+            startActivity(new Intent(this, IntroActivity.class));
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
