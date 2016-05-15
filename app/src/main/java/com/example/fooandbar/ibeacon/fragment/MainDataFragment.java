@@ -2,7 +2,6 @@ package com.example.fooandbar.ibeacon.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,41 +11,48 @@ import com.example.fooandbar.ibeacon.R;
 import com.example.fooandbar.ibeacon.adapter.RoomListAdapter;
 import com.example.fooandbar.ibeacon.model.Room;
 import com.example.fooandbar.ibeacon.model.UserDevice;
+import com.example.fooandbar.ibeacon.storage.FirebaseRepo;
+import com.example.fooandbar.ibeacon.storage.StorageContract;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class MainDataFragment extends Fragment {
+public class MainDataFragment extends Fragment implements StorageContract.OnAllRoomsMapRetrievedCallback{
+
+    public static final String TAG = "MainDataFragment";
+
     LinkedHashMap<Room, ArrayList<UserDevice>> dataToSet = new LinkedHashMap<>();
     ExpandableListView roomListView;
     RoomListAdapter adapter;
+    boolean firstTime = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_data, container, false);
-        Log.d("some_tag", "fragment");
 
         roomListView = (ExpandableListView) view.findViewById(R.id.roomListView);
         roomListView.setDivider(null);
         roomListView.setChildDivider(null);
         roomListView.setGroupIndicator(null);
-        ArrayList<UserDevice> devices = new ArrayList<>();
-        UserDevice userDevice = new UserDevice();
-        userDevice.setName("My Name");
-        userDevice.setDistance(15);
-        userDevice.setIdBeacon("Nexus 5");
-        userDevice.setUserID("878787");
-        devices.add(userDevice);
-        devices.add(userDevice);
-        devices.add(userDevice);
-        adapter = new RoomListAdapter(getContext(), setRoomData(devices));
+        new FirebaseRepo().getAllRoomsMap(this);
+        adapter = new RoomListAdapter(getContext(), dataToSet);
         roomListView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+//        ArrayList<UserDevice> userDevices = new ArrayList<>();
+//        UserDevice userDevice = new UserDevice();
+//        userDevice.setDistance(5);
+//        userDevice.setIdBeacon("asd");
+//        userDevice.setName("Lex");
+//        userDevice.setUserID("Nexus");
+//        userDevices.add(userDevice);
+     //   roomListView.setAdapter(adapter);
+      //  adapter.notifyDataSetChanged();
 
         return view;
     }
 
     public LinkedHashMap<Room, ArrayList<UserDevice>> setRoomData(ArrayList<UserDevice> userDevices) {
+
 
         ArrayList<UserDevice> roomUsersList = new ArrayList<>();
         Room room = new Room();
@@ -62,5 +68,29 @@ public class MainDataFragment extends Fragment {
             dataToSet.put(room, roomUsersList);
         }
         return dataToSet;
+    }
+
+    @Override
+    public void onAllRoomsMapRetrieved(Map<String, Room> roomMap) {
+        if(roomMap.size() > 0){
+            Object[] objects = roomMap.keySet().toArray();
+            ArrayList<UserDevice> userDevices = new ArrayList<>();
+            for(int i = 0; i < roomMap.size(); i++){
+                Room room = roomMap.get(objects[i]);
+                if(room.getUserDevices()!=null){
+                    Object[] keys = room.getUserDevices().keySet().toArray();
+                    for(int j = 0; j < room.getUserDevices().size(); j++){
+                        userDevices.add(room.getUserDevices().get(keys[j]));
+                    }
+                    dataToSet.put(room,userDevices);
+                }
+
+            }
+            adapter = new RoomListAdapter(getContext(), dataToSet);
+            roomListView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            dataToSet = new LinkedHashMap<>();
+        }
+
     }
 }

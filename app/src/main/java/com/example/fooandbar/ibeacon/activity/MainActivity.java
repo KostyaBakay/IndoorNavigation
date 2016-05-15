@@ -5,14 +5,13 @@ import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.fooandbar.ibeacon.BeaconListenerService;
-import com.example.fooandbar.ibeacon.IntroActivity;
 import com.example.fooandbar.ibeacon.R;
 import com.example.fooandbar.ibeacon.fragment.MainDataFragment;
 import com.example.fooandbar.ibeacon.fragment.SettingsFragment;
@@ -31,30 +30,37 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupUI();
         setupPreferences(); //sets preferences
         startService(new Intent(MainActivity.this,BeaconListenerService.class));
         addMainDataFragment();
     }
 
     public void addMainDataFragment() {
-        MainDataFragment fragment = new MainDataFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.activity_main, fragment);
-        ft.commit();
+		if (getSupportFragmentManager().findFragmentByTag(MainDataFragment.TAG) == null) {
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.container_main, new MainDataFragment(), MainDataFragment.TAG)
+					.commit();
+		}
     }
 
     public void addSettingsFragment() {
-        SettingsFragment fragment = new SettingsFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.activity_main, fragment);
-        ft.commit();
+		if (getSupportFragmentManager().findFragmentByTag(SettingsFragment.TAG) == null) {
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.container_main, new SettingsFragment(), SettingsFragment.TAG)
+					.commit();
+		}
     }
 
     public void addUserDetailsFragment() {
-        UserDetailsFragment fragment = new UserDetailsFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.activity_main, fragment);
-        ft.commit();
+		if (getSupportFragmentManager().findFragmentByTag(UserDetailsFragment.TAG) == null) {
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.container_main, new UserDetailsFragment(), UserDetailsFragment.TAG)
+					.commit();
+		}
     }
 
     private void setupPreferences() {
@@ -80,7 +86,6 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(MainActivity.class.getSimpleName(), "onCreateOptionsMenu");
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
     }
@@ -88,12 +93,7 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(MainActivity.class.getSimpleName(), "onOptionsItemSelected");
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_rooms) {
             addMainDataFragment();
             return true;
@@ -104,7 +104,11 @@ public class MainActivity extends AppCompatActivity  {
             addSettingsFragment();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupUI() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.fooandbar.ibeacon;
+package com.example.fooandbar.ibeacon.activity;
 
 import android.animation.ArgbEvaluator;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.fooandbar.ibeacon.R;
 import com.example.fooandbar.ibeacon.adapter.IntroPageTransformer;
 import com.example.fooandbar.ibeacon.adapter.IntroPagerAdapter;
 import com.example.fooandbar.ibeacon.fragment.FragmentIntro;

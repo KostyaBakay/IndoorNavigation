@@ -1,56 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/roomHolder"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="15dp"
-    android:orientation="vertical">
+<LinearLayout
+	android:id="@+id/roomHolder"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="54dp"
+	android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center_vertical"
+		android:orientation="horizontal">
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+		<FrameLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@mipmap/im_door" />
+			<ImageView
+				android:layout_width="48dp"
+				android:layout_height="48dp"
+				android:src="@mipmap/im_door"/>
 
-            <FrameLayout
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="bottom|right"
-                android:background="@drawable/room_shape"
-                android:backgroundTint="@color/colorAccent" />
+			<FrameLayout
+				android:layout_width="18dp"
+				android:layout_height="18dp"
+				android:layout_gravity="bottom|end"
+				android:background="@drawable/room_shape"
+				android:backgroundTint="@color/accent"/>
 
-            <TextView
-                android:id="@+id/usersInRoomTextView"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:gravity="bottom|right"
-                android:paddingBottom="1dp"
-                android:paddingRight="2dp"
-                android:text="45"
-                android:textColor="@android:color/white" />
+			<TextView
+				android:id="@+id/usersInRoomTextView"
+				android:layout_width="48dp"
+				android:layout_height="48dp"
+				android:gravity="bottom|end"
+				android:paddingBottom="1dp"
+				android:paddingRight="2dp"
+				android:textSize="13sp"
+				android:text="45"
+				android:textColor="@android:color/white"/>
 
-        </FrameLayout>
+		</FrameLayout>
 
-        <TextView
-            android:id="@+id/roomName"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:text="Texas"
-            android:textSize="22sp" />
+		<TextView
+			android:id="@+id/roomName"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="center_vertical"
+			android:text="Texas"
+			android:textStyle="bold"
+			android:paddingLeft="16dp"
+			android:textSize="18sp"/>
 
-    </LinearLayout>
+	</LinearLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="15dp" />
+	<Space
+		android:layout_width="match_parent"
+		android:layout_height="15dp"/>
 
 </LinearLayout>

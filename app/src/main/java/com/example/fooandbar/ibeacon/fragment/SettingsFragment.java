@@ -14,6 +14,9 @@ import com.example.fooandbar.ibeacon.R;
 import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 
 public class SettingsFragment extends Fragment {
+
+    public static final String TAG = "SettingsFragment";
+
     private EditText mUserNameEditText;
     private Button mSaveButton;
 

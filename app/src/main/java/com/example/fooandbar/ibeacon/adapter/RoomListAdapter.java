@@ -1,6 +1,7 @@
 package com.example.fooandbar.ibeacon.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,9 @@ public class RoomListAdapter extends BaseExpandableListAdapter{
 
     @Override
     public int getChildrenCount(int groupPosition) {
+        if(rooms.length>0)
         return mMap.get(rooms[groupPosition]).size();
+        else return 0;
     }
 
     @Override
@@ -64,6 +67,7 @@ public class RoomListAdapter extends BaseExpandableListAdapter{
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
+        convertView = null;
         if(convertView == null){
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_room,parent,false);
             viewHolder = new ViewHolder(convertView);
@@ -71,13 +75,16 @@ public class RoomListAdapter extends BaseExpandableListAdapter{
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-        if(mMap.get(rooms[groupPosition]).size()<10){
-            viewHolder.usersInRoomTextView.setText(mMap.get(rooms[groupPosition]).size()+" ");
-        }else{
-            viewHolder.usersInRoomTextView.setText(mMap.get(rooms[groupPosition]).size()+"");
+        if(rooms.length>0){
+            if(mMap.get(rooms[groupPosition]).size()<10){
+                viewHolder.usersInRoomTextView.setText(getChildrenCount(groupPosition)+" ");
+            }else{
+                viewHolder.usersInRoomTextView.setText(getChildrenCount(groupPosition)+"");
+            }
+            viewHolder.roomName.setText(((Room)rooms[groupPosition]).getName());
         }
-        viewHolder.roomName.setText(((Room)rooms[groupPosition]).getName());
+
+
 
 
         return convertView;
@@ -86,6 +93,7 @@ public class RoomListAdapter extends BaseExpandableListAdapter{
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildViewHolder childViewHolder = null;
+        convertView = null;
         if(convertView == null){
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_user,parent,false);
             childViewHolder = new ChildViewHolder(convertView);
