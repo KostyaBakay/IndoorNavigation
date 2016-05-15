@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
+
 public class MainDataFragment extends Fragment implements StorageContract.OnAllRoomsMapRetrievedCallback{
 
     public static final String TAG = "MainDataFragment";
@@ -29,6 +31,7 @@ public class MainDataFragment extends Fragment implements StorageContract.OnAllR
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_data, container, false);
+
 
         roomListView = (ExpandableListView) view.findViewById(R.id.roomListView);
         roomListView.setDivider(null);
@@ -81,4 +84,8 @@ public class MainDataFragment extends Fragment implements StorageContract.OnAllR
         }
 
     }
+
+
+
+
 }

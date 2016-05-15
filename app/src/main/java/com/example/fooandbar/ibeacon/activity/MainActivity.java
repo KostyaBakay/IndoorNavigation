@@ -8,6 +8,8 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -127,7 +129,13 @@ public class MainActivity extends AppCompatActivity  {
         Log.d(MainActivity.class.getSimpleName(), "onOptionsItemSelected");
         int id = item.getItemId();
         if (id == R.id.action_sync) {
-            Toast.makeText(this, R.string.sync, Toast.LENGTH_SHORT).show();
+            FragmentManager fm = getSupportFragmentManager();
+            for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                fm.popBackStack();
+            }
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.container_main, new MainDataFragment()).commit();
+
         } else if (id == R.id.action_rooms) {
             addMainDataFragment();
             return true;
