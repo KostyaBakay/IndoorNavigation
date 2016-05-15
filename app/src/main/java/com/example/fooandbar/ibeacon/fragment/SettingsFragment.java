@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.fooandbar.ibeacon.activity.MainActivity;
 import com.example.fooandbar.ibeacon.R;
 import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 
@@ -34,7 +35,7 @@ public class SettingsFragment extends Fragment {
                 if (mUserNameEditText.length() > 0) {
                     Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();
                     PreferencesUtil.writeName(getActivity(), mUserNameEditText.getText().toString());
-                    getActivity().onBackPressed();
+                    ((MainActivity) getActivity()).addMainDataFragment();
                 } else {
                     Toast.makeText(getActivity(), R.string.enter_your_data, Toast.LENGTH_SHORT).show();
                 }

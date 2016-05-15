@@ -1,4 +1,4 @@
-package com.example.fooandbar.ibeacon;
+package com.example.fooandbar.ibeacon.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +12,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.fooandbar.ibeacon.R;
+import com.example.fooandbar.ibeacon.fragment.MainDataFragment;
 import com.example.fooandbar.ibeacon.fragment.SettingsFragment;
 import com.example.fooandbar.ibeacon.fragment.UserDetailsFragment;
+import com.example.fooandbar.ibeacon.BeaconListenerService;
 import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 import com.kontakt.sdk.android.ble.configuration.scan.ScanContext;
 import com.kontakt.sdk.android.ble.manager.ProximityManagerContract;
@@ -36,24 +39,31 @@ public class MainActivity extends AppCompatActivity  {
 
         // For testing UserDetailsFragment
         // addUserDetailsFragment();
+        addMainDataFragment();
     }
 
 
 
-    private void addSettingsFragment() {
-        SettingsFragment fragment = new SettingsFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.activity_main, fragment).addToBackStack(null);
-        ft.commit();
-    }
-
-    private void addUserDetailsFragment() {
-        UserDetailsFragment fragment = new UserDetailsFragment();
+    public void addMainDataFragment() {
+        MainDataFragment fragment = new MainDataFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.activity_main, fragment);
         ft.commit();
     }
 
+    public void addSettingsFragment() {
+        SettingsFragment fragment = new SettingsFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.activity_main, fragment);
+        ft.commit();
+    }
+
+    public void addUserDetailsFragment() {
+        UserDetailsFragment fragment = new UserDetailsFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.activity_main, fragment);
+        ft.commit();
+    }
 
     private void setupPreferences() {
         if (PreferencesUtil.readName(this) == null) PreferencesUtil.writeName(this, android.os.Build.MODEL);
@@ -87,7 +97,13 @@ public class MainActivity extends AppCompatActivity  {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_rooms) {
+            addMainDataFragment();
+            return true;
+        } else if (id == R.id.action_about_user) {
+            addUserDetailsFragment();
+            return true;
+        } else if (id == R.id.action_settings) {
             addSettingsFragment();
             return true;
         }
