@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#3F51B5</color>
-    <color name="primary_dark">#303F9F</color>
-    <color name="accent">#FF4081</color>
-    <color name="text_primary">#FFF</color>
-    <color name="text_secondary">#CCC</color>
+    <color name="primary">#795548</color>
+    <color name="primary_dark">#5D4037</color>
+    <color name="accent">#448AFF</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B6B6B6</color>
     <color name="window_background">#FFF</color>
     <color name="toolbar_primary">#FFF</color>
-    <color name="toolbar_secondary">#CCC</color>
+    <color name="toolbar_secondary">#FFF</color>
 
     <color name="tutorial_indicator_selected">#FFF</color>
-    <color name="tutorial_indicator_unselected">#AAA</color>
+    <color name="tutorial_indicator_unselected">#CCC</color>
     <color name="tutorial_button">#FFF</color>
     <color name="tutorial_title">#FFF</color>
-    <color name="tutorial_subtitle">#AAA</color>
-    <color name="tutorial_page1">#FF4081</color>
-    <color name="tutorial_page2">#3F51B5</color>
+    <color name="tutorial_subtitle">#FFF</color>
+    <color name="tutorial_page1">#880E4F</color>
+    <color name="tutorial_page2">#00695C</color>
+    <color name="tutorial_page3">#311B92</color>
 </resources>

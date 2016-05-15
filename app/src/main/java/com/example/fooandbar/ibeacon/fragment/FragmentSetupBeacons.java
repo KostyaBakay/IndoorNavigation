@@ -32,6 +32,7 @@ public class FragmentSetupBeacons extends Fragment
 
 	private ListView mListView;
 	private SetupedRoomAdapter mAdapter;
+	private Map<String, Room> mRoomMap;
 
 	public static FragmentSetupBeacons getInstance(@Nullable Bundle data) {
 		FragmentSetupBeacons fragment = new FragmentSetupBeacons();
@@ -93,22 +94,23 @@ public class FragmentSetupBeacons extends Fragment
 						}
 					}
 				})
+				.setNegativeButton("Cancel", null)
 				.create().show();
 	}
 
 	@Override
 	public void onAllRoomsMapRetrieved(Map<String, Room> roomMap) {
 		if (roomMap != null && !roomMap.isEmpty()) {
+			mRoomMap = roomMap;
 			Iterator iterator = roomMap.values().iterator();
 			ArrayList<Room> list = new ArrayList<>();
 			while (iterator.hasNext()) {
-				list.add((Room)iterator.next());
+				list.add((Room) iterator.next());
 			}
 
 			if (mAdapter == null) {
 				mAdapter = new SetupedRoomAdapter(getActivity(), list);
-			}
-			else mAdapter.setList(list);
+			} else mAdapter.setList(list);
 			if (mListView != null) mListView.setAdapter(mAdapter);
 		}
 	}

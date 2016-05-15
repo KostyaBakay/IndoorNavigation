@@ -104,14 +104,21 @@ public class IntroActivity extends AppCompatActivity implements View.OnClickList
                     R.color.tutorial_page1,
                     FragmentIntro.getInstance(
                             0, getString(R.string.tutorial_subtitle1),
-                            R.mipmap.ic_launcher)
+                            R.drawable.im_page1)
             );
             mAdapter.addFragment(
                     getString(R.string.tutorial_title2),
                     R.color.tutorial_page2,
                     FragmentIntro.getInstance(
                             1, getString(R.string.tutorial_subtitle2),
-                            R.mipmap.ic_launcher)
+                            R.drawable.im_page2)
+            );
+            mAdapter.addFragment(
+                    getString(R.string.tutorial_title3),
+                    R.color.tutorial_page3,
+                    FragmentIntro.getInstance(
+                            2, null,
+                            R.drawable.im_page3)
             );
         }
         mViewPager.setAdapter(mAdapter);
