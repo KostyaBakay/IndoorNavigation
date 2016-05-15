@@ -1,11 +1,8 @@
 package com.example.fooandbar.ibeacon.activity;
 
 import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
@@ -28,7 +25,7 @@ import com.kontakt.sdk.android.ble.manager.ProximityManagerContract;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     private final String TAGNETW = "NetworkBeaconRequest";
     private ProximityManagerContract proximityManager;
@@ -41,14 +38,12 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         setupUI();
         setupPreferences(); //sets preferences
-        sweetAlertDialog = new SweetAlertDialog(MainActivity.this,SweetAlertDialog.WARNING_TYPE);
+        sweetAlertDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE);
 
-        if(isBluetoothAvailable()) {
+        if (isBluetoothAvailable()) {
             startService(new Intent(MainActivity.this, BeaconListenerService.class));
             addMainDataFragment();
-        }
-        else
-        {
+        } else {
             sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
             sweetAlertDialog.setTitleText("You have turned off a Bluetooth");
             sweetAlertDialog.setCancelable(false);
@@ -66,41 +61,40 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     public void addMainDataFragment() {
-		if (getSupportFragmentManager().findFragmentByTag(MainDataFragment.TAG) == null) {
-			getSupportFragmentManager()
-					.beginTransaction()
-					.replace(R.id.container_main, new MainDataFragment(), MainDataFragment.TAG)
-					.commit();
-		}
+        if (getSupportFragmentManager().findFragmentByTag(MainDataFragment.TAG) == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container_main, new MainDataFragment(), MainDataFragment.TAG)
+                    .commit();
+        }
     }
 
     public void addSettingsFragment() {
-		if (getSupportFragmentManager().findFragmentByTag(SettingsFragment.TAG) == null) {
-			getSupportFragmentManager()
-					.beginTransaction()
-					.replace(R.id.container_main, new SettingsFragment(), SettingsFragment.TAG)
-					.commit();
-		}
+        if (getSupportFragmentManager().findFragmentByTag(SettingsFragment.TAG) == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container_main, new SettingsFragment(), SettingsFragment.TAG)
+                    .commit();
+        }
     }
 
     public void addUserDetailsFragment() {
-		if (getSupportFragmentManager().findFragmentByTag(UserDetailsFragment.TAG) == null) {
-			getSupportFragmentManager()
-					.beginTransaction()
-					.replace(R.id.container_main, new UserDetailsFragment(), UserDetailsFragment.TAG)
-					.commit();
-		}
+        if (getSupportFragmentManager().findFragmentByTag(UserDetailsFragment.TAG) == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container_main, new UserDetailsFragment(), UserDetailsFragment.TAG)
+                    .commit();
+        }
     }
 
     private void setupPreferences() {
-        if (PreferencesUtil.readName(this) == null) PreferencesUtil.writeName(this, android.os.Build.MODEL);
+        if (PreferencesUtil.readName(this) == null)
+            PreferencesUtil.writeName(this, android.os.Build.MODEL);
         if (PreferencesUtil.readId(this) == null) PreferencesUtil.writeId(this, getMacAddress());
     }
 
     private String getMacAddress() {
-        WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        WifiInfo info = manager.getConnectionInfo();
-        return info.getMacAddress();
+        return android.provider.Settings.Secure.getString(this.getContentResolver(), "bluetooth_address");
     }
 
 
@@ -111,7 +105,7 @@ public class MainActivity extends AppCompatActivity  {
             startActivity(new Intent(this, IntroActivity.class));
         }
 
-        if(isBluetoothAvailable())
+        if (isBluetoothAvailable())
             sweetAlertDialog.dismiss();
         else
             sweetAlertDialog.show();
