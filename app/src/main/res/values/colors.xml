@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="primary">#3F51B5</color>
+    <color name="primary_dark">#303F9F</color>
+    <color name="accent">#FF4081</color>
+    <color name="text_primary">#FFF</color>
+    <color name="text_secondary">#CCC</color>
+    <color name="window_background">#FFF</color>
+    <color name="toolbar_primary">#FFF</color>
+    <color name="toolbar_secondary">#CCC</color>
 
     <color name="tutorial_indicator_selected">#FFF</color>
     <color name="tutorial_indicator_unselected">#AAA</color>

@@ -12,6 +12,8 @@ import com.example.fooandbar.ibeacon.utils.PreferencesUtil;
 
 public class UserDetailsFragment extends Fragment {
 
+    public static final String TAG = "UserDetailsFragment";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_user_details, container, false);

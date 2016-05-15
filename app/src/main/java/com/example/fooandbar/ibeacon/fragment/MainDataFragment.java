@@ -2,7 +2,6 @@ package com.example.fooandbar.ibeacon.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MainDataFragment extends Fragment implements StorageContract.OnAllRoomsMapRetrievedCallback{
+
+    public static final String TAG = "MainDataFragment";
+
     LinkedHashMap<Room, ArrayList<UserDevice>> dataToSet = new LinkedHashMap<>();
     ExpandableListView roomListView;
     RoomListAdapter adapter;
